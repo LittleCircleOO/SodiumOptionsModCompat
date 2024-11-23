@@ -1,9 +1,11 @@
 {
   "required": true,
-  "package": "toni.sodiumoptionsmodcompat.mixins",
+  "package": "toni.sodiumoptionsmodcompat.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
+  "plugin" : "toni.sodiumoptionsmodcompat.MixinPlugin",
   "mixins": [
+    "DynamicFPSConfigAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

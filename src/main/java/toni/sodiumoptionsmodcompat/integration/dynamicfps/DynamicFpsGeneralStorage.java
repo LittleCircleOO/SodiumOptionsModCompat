@@ -2,7 +2,14 @@ package toni.sodiumoptionsmodcompat.integration.dynamicfps;
 
 import dynamic_fps.impl.DynamicFPSMod;
 import dynamic_fps.impl.config.DynamicFPSConfig;
-import org.embeddedt.embeddium.api.options.structure.OptionStorage;
+
+#if AFTER_21_1
+import net.caffeinemc.mods.sodium.client.gui.options.storage.OptionStorage;
+#elif FABRIC
+import me.jellysquid.mods.sodium.client.gui.options.storage.OptionStorage;
+#elif FORGE
+import me.jellysquid.mods.sodium.client.gui.options.storage.OptionStorage;
+#endif
 
 public class DynamicFpsGeneralStorage implements OptionStorage<DynamicFPSConfig> {
 
@@ -10,12 +17,12 @@ public class DynamicFpsGeneralStorage implements OptionStorage<DynamicFPSConfig>
 
     @Override
     public DynamicFPSConfig getData() {
-        return DynamicFPSMod.modConfig;
+        return DynamicFPSConfig.INSTANCE;
     }
 
     @Override
     public void save() {
-        DynamicFPSMod.modConfig.save();
+        DynamicFPSMod.onConfigChanged();
     }
 
 }

@@ -4,13 +4,10 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.embeddedt.embeddium.api.options.OptionIdentifier;
-import org.embeddedt.embeddium.api.options.control.CyclingControl;
-import org.embeddedt.embeddium.api.options.control.SliderControl;
-import org.embeddedt.embeddium.api.options.control.TickBoxControl;
-import org.embeddedt.embeddium.api.options.structure.OptionGroup;
-import org.embeddedt.embeddium.api.options.structure.OptionImpl;
-import org.embeddedt.embeddium.api.options.structure.OptionPage;
+import toni.lib.utils.VersionUtils;
+import toni.sodiumoptionsapi.api.ExtendedOptionGroup;
+import toni.sodiumoptionsapi.api.OptionIdentifier;
+import toni.sodiumoptionsapi.util.IOptionGroupIdAccessor;
 import traben.entity_model_features.EMF;
 import traben.entity_model_features.config.EMFConfig;
 import traben.entity_texture_features.ETF;
@@ -19,23 +16,53 @@ import traben.entity_texture_features.config.ETFConfig;
 import java.util.ArrayList;
 import java.util.List;
 
+#if AFTER_21_1
+import net.caffeinemc.mods.sodium.client.gui.options.OptionGroup;
+import net.caffeinemc.mods.sodium.client.gui.options.OptionImpl;
+import net.caffeinemc.mods.sodium.client.gui.options.OptionPage;
+import net.caffeinemc.mods.sodium.client.gui.options.control.CyclingControl;
+import net.caffeinemc.mods.sodium.client.gui.options.control.TickBoxControl;
+import net.caffeinemc.mods.sodium.client.gui.options.storage.SodiumOptionsStorage;
+import net.caffeinemc.mods.sodium.client.gui.options.control.SliderControl;
+import net.caffeinemc.mods.sodium.client.gui.options.control.ControlValueFormatter;
+#elif FABRIC
+import me.jellysquid.mods.sodium.client.gui.options.OptionGroup;
+import me.jellysquid.mods.sodium.client.gui.options.OptionImpl;
+import me.jellysquid.mods.sodium.client.gui.options.OptionPage;
+import me.jellysquid.mods.sodium.client.gui.options.control.CyclingControl;
+import me.jellysquid.mods.sodium.client.gui.options.control.TickBoxControl;
+import me.jellysquid.mods.sodium.client.gui.options.storage.SodiumOptionsStorage;
+import me.jellysquid.mods.sodium.client.gui.options.control.SliderControl;
+import me.jellysquid.mods.sodium.client.gui.options.control.ControlValueFormatter;
+#elif FORGE
+import me.jellysquid.mods.sodium.client.gui.options.OptionGroup;
+import me.jellysquid.mods.sodium.client.gui.options.OptionImpl;
+import me.jellysquid.mods.sodium.client.gui.options.OptionPage;
+import me.jellysquid.mods.sodium.client.gui.options.control.CyclingControl;
+import me.jellysquid.mods.sodium.client.gui.options.control.TickBoxControl;
+import me.jellysquid.mods.sodium.client.gui.options.storage.SodiumOptionsStorage;
+import me.jellysquid.mods.sodium.client.gui.options.control.SliderControl;
+import me.jellysquid.mods.sodium.client.gui.options.control.ControlValueFormatter;
+import me.jellysquid.mods.sodium.client.gui.options.OptionFlag;
+#endif
+
 public class EmfModelsOptionPage extends OptionPage {
 
-    public static final OptionIdentifier<Void> ID = OptionIdentifier.create(ResourceLocation.fromNamespaceAndPath(ETF.MOD_ID, "models"));
+    public static final OptionIdentifier<Void> ID = OptionIdentifier.create(VersionUtils.resource(ETF.MOD_ID, "models"));
 
     public EmfModelsOptionPage() {
-        super(ID, Component.translatable("options.embyui.emf.models"), create());
+        super(Component.translatable("options.sodiumoptionsmodcompat.emf.models"), create());
+        ((IOptionGroupIdAccessor)this).sodiumOptionsAPI$setId(ID);
     }
 
     private static ImmutableList<OptionGroup> create() {
         final List<OptionGroup> groups = new ArrayList<>();
 
         groups.add(
-                OptionGroup.createBuilder()
-                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "options_n_fixes"))
+                ExtendedOptionGroup.createBuilder(VersionUtils.resource(EMF.MOD_ID, "options_n_fixes"))
                         .add(
                                 OptionImpl.createBuilder(boolean.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "force_models"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "force_models"))
                                         .setName(Component.translatable("entity_model_features.config.force_models"))
                                         .setTooltip(Component.translatable("entity_model_features.config.force_models.tooltip"))
                                         .setControl(TickBoxControl::new)
@@ -45,7 +72,7 @@ public class EmfModelsOptionPage extends OptionPage {
                         )
                         .add(
                                 OptionImpl.createBuilder(EMFConfig.PhysicsModCompatChoice.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "physics"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "physics"))
                                         .setName(Component.translatable("entity_model_features.config.physics"))
                                         .setTooltip(Component.translatable("entity_model_features.config.physics.tooltip"))
                                         .setControl((opt) -> new CyclingControl<>(opt, EMFConfig.PhysicsModCompatChoice.class, new Component[] {
@@ -59,7 +86,7 @@ public class EmfModelsOptionPage extends OptionPage {
                         )
                         .add(
                                 OptionImpl.createBuilder(boolean.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "ebe_config_modify"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "ebe_config_modify"))
                                         .setName(Component.translatable("entity_model_features.config.ebe_config_modify"))
                                         .setTooltip(Component.translatable("entity_model_features.config.ebe_config_modify.tooltip"))
                                         .setControl(TickBoxControl::new)
@@ -71,11 +98,10 @@ public class EmfModelsOptionPage extends OptionPage {
         );
 
         groups.add(
-                OptionGroup.createBuilder()
-                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "player"))
+                ExtendedOptionGroup.createBuilder(VersionUtils.resource(EMF.MOD_ID, "player"))
                         .add(
                                 OptionImpl.createBuilder(boolean.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "prevent_hand"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "prevent_hand"))
                                         .setName(Component.translatable("entity_model_features.config.prevent_hand"))
                                         .setTooltip(Component.translatable("entity_model_features.config.prevent_hand.tooltip"))
                                         .setControl(TickBoxControl::new)
@@ -85,7 +111,7 @@ public class EmfModelsOptionPage extends OptionPage {
                         )
                         .add(
                                 OptionImpl.createBuilder(boolean.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "only_client"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "only_client"))
                                         .setName(Component.translatable("entity_model_features.config.only_client"))
                                         .setTooltip(Component.translatable("entity_model_features.config.only_client.tooltip"))
                                         .setControl(TickBoxControl::new)
@@ -97,11 +123,10 @@ public class EmfModelsOptionPage extends OptionPage {
         );
 
         groups.add(
-                OptionGroup.createBuilder()
-                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "performance"))
+                ExtendedOptionGroup.createBuilder(VersionUtils.resource(EMF.MOD_ID, "performance"))
                         .add(
                                 OptionImpl.createBuilder(ETFConfig.UpdateFrequency.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "update"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "update"))
                                         .setName(Component.translatable("entity_model_features.config.update"))
                                         .setTooltip(Component.translatable("entity_model_features.config.update.tooltip"))
                                         .setControl((opt) -> new CyclingControl<>(opt, ETFConfig.UpdateFrequency.class, new Component[] {
@@ -117,7 +142,7 @@ public class EmfModelsOptionPage extends OptionPage {
                         )
                         .add(
                                 OptionImpl.createBuilder(int.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "lod"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "lod"))
                                         .setName(Component.translatable("entity_model_features.config.lod"))
                                         .setTooltip(Component.translatable("entity_model_features.config.lod.tooltip"))
                                         .setControl(option -> new SliderControl(option, 0, 65, 1, value -> value % 65 != 0 ? Component.literal(String.valueOf(value)) : CommonComponents.OPTION_OFF))
@@ -127,7 +152,7 @@ public class EmfModelsOptionPage extends OptionPage {
                         )
                         .add(
                                 OptionImpl.createBuilder(boolean.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "low_fps_lod"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "low_fps_lod"))
                                         .setName(Component.translatable("entity_model_features.config.low_fps_lod"))
                                         .setTooltip(Component.translatable("entity_model_features.config.low_fps_lod.tooltip"))
                                         .setControl(TickBoxControl::new)
@@ -137,7 +162,7 @@ public class EmfModelsOptionPage extends OptionPage {
                         )
                         .add(
                                 OptionImpl.createBuilder(boolean.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "large_mob_lod"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "large_mob_lod"))
                                         .setName(Component.translatable("entity_model_features.config.large_mob_lod"))
                                         .setTooltip(Component.translatable("entity_model_features.config.large_mob_lod.tooltip"))
                                         .setControl(TickBoxControl::new)
@@ -149,11 +174,10 @@ public class EmfModelsOptionPage extends OptionPage {
         );
 
         groups.add(
-                OptionGroup.createBuilder()
-                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "tools"))
+                ExtendedOptionGroup.createBuilder(VersionUtils.resource(EMF.MOD_ID, "tools"))
                         .add(
                                 OptionImpl.createBuilder(EMFConfig.VanillaModelRenderMode.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "vanilla_render"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "vanilla_render"))
                                         .setName(Component.translatable("entity_model_features.config.vanilla_render"))
                                         .setTooltip(Component.translatable("entity_model_features.config.vanilla_render.tooltip"))
                                         .setControl((opt) -> new CyclingControl<>(opt, EMFConfig.VanillaModelRenderMode.class, new Component[] {
@@ -167,7 +191,7 @@ public class EmfModelsOptionPage extends OptionPage {
                         )
                         .add(
                                 OptionImpl.createBuilder(EMFConfig.ModelPrintMode.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "print_mode"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "print_mode"))
                                         .setName(Component.translatable("entity_model_features.config.print_mode"))
                                         .setTooltip(Component.translatable("entity_model_features.config.print_mode.tooltip"))
                                         .setControl((opt) -> new CyclingControl<>(opt, EMFConfig.ModelPrintMode.class, new Component[] {
@@ -185,11 +209,10 @@ public class EmfModelsOptionPage extends OptionPage {
         );
 
         groups.add(
-                OptionGroup.createBuilder()
-                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "debugging"))
+                ExtendedOptionGroup.createBuilder(VersionUtils.resource(EMF.MOD_ID, "debugging"))
                         .add(
                                 OptionImpl.createBuilder(EMFConfig.RenderModeChoice.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "render"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "render"))
                                         .setName(Component.translatable("entity_model_features.config.render"))
                                         .setTooltip(Component.translatable("entity_model_features.config.render.tooltip"))
                                         .setControl((opt) -> new CyclingControl<>(opt, EMFConfig.RenderModeChoice.class, new Component[] {
@@ -206,7 +229,7 @@ public class EmfModelsOptionPage extends OptionPage {
                         )
                         .add(
                                 OptionImpl.createBuilder(boolean.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "log_models"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "log_models"))
                                         .setName(Component.translatable("entity_model_features.config.log_models"))
                                         .setTooltip(Component.translatable("entity_model_features.config.log_models.tooltip"))
                                         .setControl(TickBoxControl::new)
@@ -216,7 +239,7 @@ public class EmfModelsOptionPage extends OptionPage {
                         )
                         .add(
                                 OptionImpl.createBuilder(boolean.class, EmfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(EMF.MOD_ID, "debug_right_click"))
+                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "debug_right_click"))
                                         .setName(Component.translatable("entity_model_features.config.debug_right_click"))
                                         .setTooltip(Component.translatable("entity_model_features.config.debug_right_click.tooltip"))
                                         .setControl(TickBoxControl::new)

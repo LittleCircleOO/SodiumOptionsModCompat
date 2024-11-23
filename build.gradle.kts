@@ -29,33 +29,58 @@ val templateSettings = object : BlahajSettings {
 				else -> null
 			}
 
+			val continuityVersion = when(mod.loader + "-" + mod.mcVersion) {
+				"fabric-1.20.1" -> "3.0.0-beta.5+1.20.1"
+				"fabric-1.21.1" -> "3.0.0-beta.5+1.21"
+				"neoforge-1.21.1" -> "3.0.0-beta.5+1.21"
+				"forge-1.20.1" -> "3.0.0-beta.5+1.20.1"
+				else -> null
+			}
+
+			if (continuityVersion != null)
+			{
+				if (mod.isFabric)
+					deps.modImplementation(modrinth("continuity", continuityVersion))
+				else
+					deps.compileOnly(modrinth("continuity", continuityVersion))
+			}
+
 			if (emfVersion != null) deps.modImplementation(modrinth("entity-model-features", emfVersion))
 			if (etfVersion != null) deps.modImplementation(modrinth("entitytexturefeatures", etfVersion))
 			if (dynFPSVersion != null) deps.modImplementation(modrinth("dynamic-fps", dynFPSVersion))
 
-			deps.modImplementation("toni.sodiumoptionsapi:${mod.loader}-${mod.mcVersion}:1.0.7") { isTransitive = false }
+			deps.modImplementation("toni.sodiumoptionsapi:${mod.loader}-${mod.mcVersion}:1.0.8") { isTransitive = false }
+			deps.runtimeOnly("net.lostluma:battery:1.3.0")
 		}
 
 		override fun addFabric(mod : ModData, deps: DependencyHandler) {
+
 			if (mod.mcVersion == "1.21.1")
 			{
 				deps.modImplementation(modrinth("sodium", "mc1.21.1-0.6.0-fabric"))
 				deps.modImplementation(modrinth("reeses-sodium-options", "mc1.21.3-1.8.0+fabric"))
+				deps.include(deps.implementation(deps.annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0-beta.6")!!)!!)
 			}
 			else
 			{
 				deps.modImplementation(modrinth("sodium", "mc1.20.1-0.5.11"))
 				deps.modImplementation(modrinth("reeses-sodium-options", "mc1.20.1-1.7.2"))
+				deps.include(deps.implementation(deps.annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0-beta.6")!!)!!)
 			}
 		}
 
 		override fun addForge(mod : ModData, deps: DependencyHandler) {
 			deps.modImplementation(modrinth("embeddium", "0.3.31+mc1.20.1"))
+			deps.minecraftRuntimeLibraries("net.lostluma:battery:1.3.0")
 		}
 
 		override fun addNeo(mod : ModData, deps: DependencyHandler) {
 			deps.implementation(modrinth("sodium", "mc1.21.1-0.6.0-neoforge"))
 			deps.implementation(modrinth("reeses-sodium-options", "mc1.21.3-1.8.0+neoforge"))
+			deps.minecraftRuntimeLibraries("net.lostluma:battery:1.3.0")
+
+			deps.compileOnly(deps.annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0-beta.6")!!)
+			deps.include(deps.implementation(deps.annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-neoforge:0.2.0-beta.6")!!)!!)
 		}
 	}
 
@@ -112,4 +137,5 @@ repositories {
 	maven("https://maven.su5ed.dev/releases")
 	maven("https://maven.fabricmc.net")
 	maven("https://maven.shedaniel.me/")
+	maven("https://maven.lostluma.net/releases")
 }

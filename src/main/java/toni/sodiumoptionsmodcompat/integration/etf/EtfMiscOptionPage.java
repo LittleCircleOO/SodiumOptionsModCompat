@@ -3,37 +3,63 @@ package toni.sodiumoptionsmodcompat.integration.etf;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.embeddedt.embeddium.api.options.OptionIdentifier;
-import org.embeddedt.embeddium.api.options.control.ControlValueFormatter;
-import org.embeddedt.embeddium.api.options.control.CyclingControl;
-import org.embeddedt.embeddium.api.options.control.SliderControl;
-import org.embeddedt.embeddium.api.options.control.TickBoxControl;
-import org.embeddedt.embeddium.api.options.structure.OptionGroup;
-import org.embeddedt.embeddium.api.options.structure.OptionImpl;
-import org.embeddedt.embeddium.api.options.structure.OptionPage;
+import toni.lib.utils.VersionUtils;
+import toni.sodiumoptionsapi.api.ExtendedOptionGroup;
+import toni.sodiumoptionsapi.api.OptionIdentifier;
+import toni.sodiumoptionsapi.util.IOptionGroupIdAccessor;
 import traben.entity_texture_features.ETF;
 import traben.entity_texture_features.config.ETFConfig;
 
 import java.util.ArrayList;
 import java.util.List;
 
+#if AFTER_21_1
+import net.caffeinemc.mods.sodium.client.gui.options.OptionGroup;
+import net.caffeinemc.mods.sodium.client.gui.options.OptionImpl;
+import net.caffeinemc.mods.sodium.client.gui.options.OptionPage;
+import net.caffeinemc.mods.sodium.client.gui.options.control.CyclingControl;
+import net.caffeinemc.mods.sodium.client.gui.options.control.TickBoxControl;
+import net.caffeinemc.mods.sodium.client.gui.options.storage.SodiumOptionsStorage;
+import net.caffeinemc.mods.sodium.client.gui.options.control.SliderControl;
+import net.caffeinemc.mods.sodium.client.gui.options.control.ControlValueFormatter;
+#elif FABRIC
+import me.jellysquid.mods.sodium.client.gui.options.OptionGroup;
+import me.jellysquid.mods.sodium.client.gui.options.OptionImpl;
+import me.jellysquid.mods.sodium.client.gui.options.OptionPage;
+import me.jellysquid.mods.sodium.client.gui.options.control.CyclingControl;
+import me.jellysquid.mods.sodium.client.gui.options.control.TickBoxControl;
+import me.jellysquid.mods.sodium.client.gui.options.storage.SodiumOptionsStorage;
+import me.jellysquid.mods.sodium.client.gui.options.control.SliderControl;
+import me.jellysquid.mods.sodium.client.gui.options.control.ControlValueFormatter;
+#elif FORGE
+import me.jellysquid.mods.sodium.client.gui.options.OptionGroup;
+import me.jellysquid.mods.sodium.client.gui.options.OptionImpl;
+import me.jellysquid.mods.sodium.client.gui.options.OptionPage;
+import me.jellysquid.mods.sodium.client.gui.options.control.CyclingControl;
+import me.jellysquid.mods.sodium.client.gui.options.control.TickBoxControl;
+import me.jellysquid.mods.sodium.client.gui.options.storage.SodiumOptionsStorage;
+import me.jellysquid.mods.sodium.client.gui.options.control.SliderControl;
+import me.jellysquid.mods.sodium.client.gui.options.control.ControlValueFormatter;
+import me.jellysquid.mods.sodium.client.gui.options.OptionFlag;
+#endif
+
 public class EtfMiscOptionPage extends OptionPage {
 
-    public static final OptionIdentifier<Void> ID = OptionIdentifier.create(ResourceLocation.fromNamespaceAndPath(ETF.MOD_ID, "misc"));
+    public static final OptionIdentifier<Void> ID = OptionIdentifier.create(VersionUtils.resource(ETF.MOD_ID, "misc"));
 
     public EtfMiscOptionPage() {
-        super(ID, Component.translatable("options.embyui.etf.misc"), create());
+        super(Component.translatable("options.sodiumoptionsmodcompat.etf.misc"), create());
+        ((IOptionGroupIdAccessor)this).sodiumOptionsAPI$setId(ID);
     }
 
     private static ImmutableList<OptionGroup> create() {
         final List<OptionGroup> groups = new ArrayList<>();
 
         groups.add(
-                OptionGroup.createBuilder()
-                        .setId(ResourceLocation.fromNamespaceAndPath(ETF.MOD_ID, "misc"))
+                ExtendedOptionGroup.createBuilder(VersionUtils.resource(ETF.MOD_ID, "misc"))
                         .add(
                                 OptionImpl.createBuilder(ETFConfig.IllegalPathMode.class, EtfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(ETF.MOD_ID, "allow_illegal_texture_paths"))
+                                        //.setId(VersionUtils.resource(ETF.MOD_ID, "allow_illegal_texture_paths"))
                                         .setName(Component.translatable("config.entity_texture_features.allow_illegal_texture_paths.title"))
                                         .setTooltip(Component.translatable("config.entity_texture_features.allow_illegal_texture_paths.tooltip"))
                                         .setControl((opt) -> new CyclingControl<>(opt, ETFConfig.IllegalPathMode.class, new Component[] {
@@ -47,7 +73,7 @@ public class EtfMiscOptionPage extends OptionPage {
                         )
                         .add(
                                 OptionImpl.createBuilder(boolean.class, EtfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(ETF.MOD_ID, "warden"))
+                                        //.setId(VersionUtils.resource(ETF.MOD_ID, "warden"))
                                         .setName(Component.translatable("config.entity_texture_features.warden.title"))
                                         .setTooltip(Component.translatable("config.entity_texture_features.warden.tooltip"))
                                         .setControl(TickBoxControl::new)
@@ -57,7 +83,7 @@ public class EtfMiscOptionPage extends OptionPage {
                         )
                         .add(
                                 OptionImpl.createBuilder(boolean.class, EtfOptionsStorage.INSTANCE)
-                                        .setId(ResourceLocation.fromNamespaceAndPath(ETF.MOD_ID, "warden"))
+                                        //.setId(VersionUtils.resource(ETF.MOD_ID, "warden"))
                                         .setName(Component.translatable("config.entity_features.hide_button"))
                                         .setTooltip(Component.translatable("config.entity_features.hide_button.tooltip"))
                                         .setControl(TickBoxControl::new)
