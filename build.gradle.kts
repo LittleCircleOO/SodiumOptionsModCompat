@@ -37,6 +37,12 @@ val templateSettings = object : BlahajSettings {
 				else -> null
 			}
 
+			val lambDynamicLightsVersion = when(mod.loader + "-" + mod.mcVersion) {
+				"fabric-1.20.1" -> "mYl4RvKg"
+				"fabric-1.21.1" -> "MuAYXyhm"
+				else -> null
+			}
+
 			if (continuityVersion != null)
 			{
 				if (mod.isFabric)
@@ -48,6 +54,7 @@ val templateSettings = object : BlahajSettings {
 			if (emfVersion != null) deps.modImplementation(modrinth("entity-model-features", emfVersion))
 			if (etfVersion != null) deps.modImplementation(modrinth("entitytexturefeatures", etfVersion))
 			if (dynFPSVersion != null) deps.modImplementation(modrinth("dynamic-fps", dynFPSVersion))
+			if (lambDynamicLightsVersion != null) deps.modImplementation(modrinth("lambdynamiclights", lambDynamicLightsVersion))
 
 			deps.modImplementation("toni.sodiumoptionsapi:${mod.loader}-${mod.mcVersion}:1.0.8") { isTransitive = false }
 			deps.runtimeOnly("net.lostluma:battery:1.3.0")

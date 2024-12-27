@@ -17,6 +17,7 @@ import net.caffeinemc.mods.sodium.client.gui.options.OptionPage;
 import me.jellysquid.mods.sodium.client.gui.options.OptionPage;
 #elif FORGE
 import me.jellysquid.mods.sodium.client.gui.options.OptionPage;
+import toni.sodiumoptionsmodcompat.integration.lambdynamiclights.LambDynamicLightsOptionPage;
 #endif
 
 public class Integrations {
@@ -45,6 +46,10 @@ public class Integrations {
 
         if (PlatformUtils.isModLoaded("continuity")) {
             event.add(new ContinuityOptionPage());
+        }
+
+        if (PlatformUtils.isModLoaded("lambdynlights")) {
+            event.add(new LambDynamicLightsOptionPage());
         }
     }
 }
