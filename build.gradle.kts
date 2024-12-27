@@ -37,6 +37,14 @@ val templateSettings = object : BlahajSettings {
 				else -> null
 			}
 
+			val chunksFadeInVersion = when(mod.loader + "-" + mod.mcVersion) {
+				"fabric-1.20.1" -> "iLVykV1K"
+				"fabric-1.21.1" -> "nlajE0FI"
+				"neoforge-1.21.1" -> "M5qDBlDo"
+				"forge-1.20.1" -> null
+				else -> null
+			}
+
 			if (continuityVersion != null)
 			{
 				if (mod.isFabric)
@@ -48,6 +56,7 @@ val templateSettings = object : BlahajSettings {
 			if (emfVersion != null) deps.modImplementation(modrinth("entity-model-features", emfVersion))
 			if (etfVersion != null) deps.modImplementation(modrinth("entitytexturefeatures", etfVersion))
 			if (dynFPSVersion != null) deps.modImplementation(modrinth("dynamic-fps", dynFPSVersion))
+			if (chunksFadeInVersion != null) deps.modImplementation(modrinth("chunks-fade-in", chunksFadeInVersion))
 
 			deps.modImplementation("toni.sodiumoptionsapi:${mod.loader}-${mod.mcVersion}:1.0.8") { isTransitive = false }
 			deps.runtimeOnly("net.lostluma:battery:1.3.0")

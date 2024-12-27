@@ -2,6 +2,7 @@ package toni.sodiumoptionsmodcompat.integration;
 
 import toni.lib.utils.PlatformUtils;
 import toni.sodiumoptionsapi.api.OptionGUIConstruction;
+import toni.sodiumoptionsmodcompat.integration.chunksfadein.ChunksFadeInOptionPage;
 import toni.sodiumoptionsmodcompat.integration.continuity.ContinuityOptionPage;
 import toni.sodiumoptionsmodcompat.integration.dynamicfps.pages.DynamicFpsGeneralPage;
 import toni.sodiumoptionsmodcompat.integration.dynamicfps.pages.DynamicFpsPowerPage;
@@ -45,6 +46,10 @@ public class Integrations {
 
         if (PlatformUtils.isModLoaded("continuity")) {
             event.add(new ContinuityOptionPage());
+        }
+
+        if (PlatformUtils.isModLoaded("chunksfadein")) {
+            event.add(new ChunksFadeInOptionPage());
         }
     }
 }
