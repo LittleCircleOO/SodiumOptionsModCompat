@@ -1,6 +1,6 @@
 package toni.sodiumoptionsmodcompat.integration;
 
-import toni.lib.utils.PlatformUtils;
+import toni.sodiumoptionsmodcompat.utils.PlatformUtils;
 import toni.sodiumoptionsapi.api.OptionGUIConstruction;
 import toni.sodiumoptionsmodcompat.integration.continuity.ContinuityOptionPage;
 import toni.sodiumoptionsmodcompat.integration.dynamicfps.pages.DynamicFpsGeneralPage;

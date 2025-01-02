@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 
-import toni.lib.utils.VersionUtils;
+import toni.sodiumoptionsmodcompat.utils.VersionUtils;
 import toni.sodiumoptionsapi.api.ExtendedOptionGroup;
 import toni.sodiumoptionsapi.api.OptionIdentifier;
 import toni.sodiumoptionsapi.util.IOptionGroupIdAccessor;

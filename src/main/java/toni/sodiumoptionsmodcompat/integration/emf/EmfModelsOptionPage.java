@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import toni.lib.utils.VersionUtils;
+import toni.sodiumoptionsmodcompat.utils.VersionUtils;
 import toni.sodiumoptionsapi.api.ExtendedOptionGroup;
 import toni.sodiumoptionsapi.api.OptionIdentifier;
 import toni.sodiumoptionsapi.util.IOptionGroupIdAccessor;
@@ -60,16 +60,6 @@ public class EmfModelsOptionPage extends OptionPage {
 
         groups.add(
                 ExtendedOptionGroup.createBuilder(VersionUtils.resource(EMF.MOD_ID, "options_n_fixes"))
-                        .add(
-                                OptionImpl.createBuilder(boolean.class, EmfOptionsStorage.INSTANCE)
-                                        //.setId(VersionUtils.resource(EMF.MOD_ID, "force_models"))
-                                        .setName(Component.translatable("entity_model_features.config.force_models"))
-                                        .setTooltip(Component.translatable("entity_model_features.config.force_models.tooltip"))
-                                        .setControl(TickBoxControl::new)
-                                        .setBinding((options, value) -> options.attemptRevertingEntityModelsAlteredByAnotherMod = value,
-                                                (options) -> options.attemptRevertingEntityModelsAlteredByAnotherMod)
-                                        .build()
-                        )
                         .add(
                                 OptionImpl.createBuilder(EMFConfig.PhysicsModCompatChoice.class, EmfOptionsStorage.INSTANCE)
                                         //.setId(VersionUtils.resource(EMF.MOD_ID, "physics"))

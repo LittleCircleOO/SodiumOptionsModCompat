@@ -25,13 +25,6 @@ ordering="NONE"
 side="BOTH"
 
 [[dependencies."${id}"]]
-modId="txnilib"
-mandatory=true
-versionRange="*"
-ordering="NONE"
-side="CLIENT"
-
-[[dependencies."${id}"]]
 modId="sodiumoptionsapi"
 mandatory=true
 versionRange="*"

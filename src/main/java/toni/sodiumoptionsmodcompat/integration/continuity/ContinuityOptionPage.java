@@ -6,7 +6,7 @@ import me.pepperbell.continuity.client.ContinuityClient;
 import me.pepperbell.continuity.client.config.ContinuityConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import toni.lib.utils.VersionUtils;
+import toni.sodiumoptionsmodcompat.utils.VersionUtils;
 import toni.sodiumoptionsapi.api.ExtendedOptionGroup;
 import toni.sodiumoptionsapi.api.OptionIdentifier;
 import toni.sodiumoptionsapi.util.IOptionGroupIdAccessor;
